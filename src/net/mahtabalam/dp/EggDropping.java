@@ -10,46 +10,40 @@ class EggDropping
 				" floors is "+eggDrop(n, m)); 
 	} 
 	
-	/* Function to get minimum number of attempts needed in worst 
-	case with n eggs and m floors */
-	static int eggDrop(int n, int m) 
+	/* Function to get minimum number of attempts needed in worst case with n eggs and m floors */
+	public static int eggDrop(int n, int m) 
 	{ 
-	/* A 2D table where entery eggFloor[i][j] will represent minimum 
-	number of trials needed for i eggs and j floors. */
-		int eggFloor[][] = new int[n+1][m+1]; 
+	    //A 2D array where dpTable[i][j] will represent minimum number of attempts needed for i eggs and j floors.
+		int dpTable[][] = new int[n+1][m+1]; 
 		int result; 
 		int i, j, x; 
 		
-		// We need one trial for one floor and0 trials for 0 floors 
+		// We need one attempt for one floor and 0 attempt for 0 floors 
 		for (i = 1; i <= n; i++) 
 		{ 
-			eggFloor[i][1] = 1; 
-			eggFloor[i][0] = 0; 
+			dpTable[i][1] = 1; 
+			dpTable[i][0] = 0; 
 		} 
 		
-	// We always need j trials for one egg and j floors. 
+	    // We will need j attempts when we have only one egg and j floors. 
 		for (j = 1; j <= m; j++) 
-			eggFloor[1][j] = j; 
+			dpTable[1][j] = j; 
 		
-		// Fill rest of the entries in table using optimal substructure 
-		// property 
+		
 		for (i = 2; i <= n; i++) 
 		{ 
 			for (j = 2; j <= m; j++) 
 			{ 
-				eggFloor[i][j] = Integer.MAX_VALUE; 
+				dpTable[i][j] = Integer.MAX_VALUE; 
 				for (x = 1; x <= j; x++) 
 				{ 
-					result = 1 + Math.max(eggFloor[i-1][x-1], eggFloor[i][j-x]); 
-					if (result < eggFloor[i][j]) 
-						eggFloor[i][j] = result; 
+					result = 1 + Math.max(dpTable[i-1][x-1], dpTable[i][j-x]); 
+					if (result < dpTable[i][j]) 
+						dpTable[i][j] = result; 
 				} 
 			} 
 		} 
 		
-		return eggFloor[n][m]; 
-
+		return dpTable[n][m]; 
 	} 
-		
-	
 } 
